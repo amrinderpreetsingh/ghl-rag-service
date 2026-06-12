@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 app.use(express.json());
@@ -20,11 +19,13 @@ function auth(req, res, next) {
 const scrapeRouter = require('./routes/scrape');
 const searchRouter = require('./routes/search');
 const jobsRouter = require('./routes/jobs');
+const metricsRouter = require('./routes/metrics');
 
 app.get('/health', (_, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.use('/scrape', auth, scrapeRouter);
 app.use('/search', auth, searchRouter);
 app.use('/jobs', auth, jobsRouter);
+app.use('/metrics', auth, metricsRouter);
 
 app.listen(PORT, () => {
   console.log(`[rag-service] Running on port ${PORT}`);
